@@ -2,10 +2,15 @@ use std::time::Instant;
 
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
-use crate::{bubble::BubbleSort, insertion::InsertionSort, shell::ShellSort};
+use crate::{
+    bubble::BubbleSort, heap::HeapSort, insertion::InsertionSort, selection::SelectionSort,
+    shell::ShellSort,
+};
 
 mod bubble;
+mod heap;
 mod insertion;
+mod selection;
 mod shell;
 
 #[derive(Debug, Clone)]
@@ -117,6 +122,48 @@ fn do_sort() {
     println!("shell 10000: {:?}", duration);
 }
 
+fn measure_heap_sort(size: usize) {
+    const SEED: u64 = 123456789101112;
+
+    let mut pool = generate_data(size, SEED);
+
+    let start = Instant::now();
+
+    pool.heap_sort(|item| item.value);
+
+    let duration = start.elapsed();
+
+    println!("heap {}: {:?}", size, duration);
+}
+
+fn do_heap_sort() {
+    for i in 2..7 {
+        measure_heap_sort(10_usize.pow(i));
+    }
+}
+
+fn measure_selection_sort(size: usize) {
+    const SEED: u64 = 123456789101112;
+
+    let mut pool = generate_data(size, SEED);
+
+    let start = Instant::now();
+
+    pool.selection_sort(|item| item.value);
+
+    let duration = start.elapsed();
+
+    println!("selection {}: {:?}", size, duration);
+}
+
+fn do_selection_sort() {
+    for i in 2..7 {
+        measure_selection_sort(10_usize.pow(i));
+    }
+}
+
 fn main() {
-    do_sort();
+    // do_sort();
+    do_heap_sort();
+    do_selection_sort();
 }
