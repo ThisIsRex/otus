@@ -3,15 +3,19 @@ use std::time::Instant;
 use rand::{rngs::StdRng, Rng, SeedableRng};
 
 use crate::{
-    bubble::BubbleSort, heap::HeapSort, insertion::InsertionSort, selection::SelectionSort,
-    shell::ShellSort,
+    bubble::BubbleSort, heap::HeapSort, insertion::InsertionSort, merge::MergeSort,
+    quick::QuickSort, selection::SelectionSort, shell::ShellSort,
 };
 
 mod bubble;
 mod heap;
 mod insertion;
+mod merge;
+mod quick;
 mod selection;
 mod shell;
+
+const SEED: u64 = 123456789101112;
 
 #[derive(Debug, Clone)]
 struct Item {
@@ -31,8 +35,6 @@ fn generate_data(count: usize, seed: u64) -> Vec<Item> {
 }
 
 fn do_sort() {
-    const SEED: u64 = 22813377331;
-
     let vec100 = generate_data(100, SEED);
     let vec1000 = generate_data(1000, SEED);
     let vec10000 = generate_data(10000, SEED);
@@ -123,8 +125,6 @@ fn do_sort() {
 }
 
 fn measure_heap_sort(size: usize) {
-    const SEED: u64 = 123456789101112;
-
     let mut pool = generate_data(size, SEED);
 
     let start = Instant::now();
@@ -143,8 +143,6 @@ fn do_heap_sort() {
 }
 
 fn measure_selection_sort(size: usize) {
-    const SEED: u64 = 123456789101112;
-
     let mut pool = generate_data(size, SEED);
 
     let start = Instant::now();
@@ -162,8 +160,46 @@ fn do_selection_sort() {
     }
 }
 
+fn measure_quick_sort(size: usize) {
+    let mut pool = generate_data(size, SEED);
+
+    let start = Instant::now();
+
+    pool.quick_sort(|item| item.value);
+
+    let duration = start.elapsed();
+
+    println!("quick {}: {:?}", size, duration);
+}
+
+fn do_quick_sort() {
+    for i in 2..7 {
+        measure_quick_sort(10_usize.pow(i));
+    }
+}
+
+fn measure_merge_sort(size: usize) {
+    let mut pool = generate_data(size, SEED);
+
+    let start = Instant::now();
+
+    pool.merge_sort(|item| item.value);
+
+    let duration = start.elapsed();
+
+    println!("merge {}: {:?}", size, duration);
+}
+
+fn do_merge_sort() {
+    for i in 2..7 {
+        measure_merge_sort(10_usize.pow(i));
+    }
+}
+
 fn main() {
     // do_sort();
-    do_heap_sort();
-    do_selection_sort();
+    // do_heap_sort();
+    // do_selection_sort();
+    do_quick_sort();
+    do_merge_sort();
 }
