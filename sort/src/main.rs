@@ -196,10 +196,29 @@ fn do_merge_sort() {
     }
 }
 
+fn measure_native_sort(size: usize) {
+    let mut pool = generate_data(size, SEED);
+
+    let start = Instant::now();
+
+    pool.sort_by_key(|item| item.value);
+
+    let duration = start.elapsed();
+
+    println!("native {}: {:?}", size, duration);
+}
+
+fn do_native_sort() {
+    for i in 2..7 {
+        measure_native_sort(10_usize.pow(i));
+    }
+}
+
 fn main() {
     // do_sort();
     // do_heap_sort();
     // do_selection_sort();
     do_quick_sort();
-    do_merge_sort();
+    // do_merge_sort();
+    //do_native_sort()
 }

@@ -72,6 +72,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "num_sort"
+version = "0.1.0"
+dependencies = [
+ "rand",
+]
+
+[[package]]
 name = "pow"
 version = "0.1.0"
 dependencies = [

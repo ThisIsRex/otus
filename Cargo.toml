@@ -1,2 +1,9 @@
 [workspace]
-members = ['lucky_tickets', 'algebra_algs', 'arrays', 'bits', 'sort']
+members = [
+    'lucky_tickets',
+    'algebra_algs',
+    'arrays',
+    'bits',
+    'sort',
+    'num_sort',
+]
